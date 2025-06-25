@@ -10,11 +10,17 @@
 <h1> Mine Sweeper </h1>
 
 <body onload="onInit()">
-
+    <div>
+        <h1>
+            <span class="marked-counter">Count </span>
+            <button class="btn restart" onclick="onInit()"> </button>
+            <span class="timer">0</span>
+        </h1>
+    </div>
     <!-- <div class="board-container"> -->
-        <table>
-            <tbody class="board"></tbody>
-        </table>
+    <table>
+        <tbody class="board"></tbody>
+    </table>
     <!-- </div> -->
 
 
@@ -24,7 +30,7 @@
 </body>
 
 <footer class="footer">
-        Adi bar
+    Adi bar
 </footer>
 
 </html>

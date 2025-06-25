@@ -9,23 +9,27 @@ var gLevel = {
 }
 
 var gGame
-
 var gBoard
 
 function onInit() {
+    stopTimer()
     gGame = {
         isOn: true,
         revealedCount: 0,
-        markedCount: 0,
-        secsPassed: 0
+        markedCount: gLevel.MINES,
+        secsPassed: 0,
+        isTimer: false
     }
     if (!gGame.isOn) return
 
     gBoard = buildBoard()
-    randomizeMines(gBoard)
+    // randomizeMines(gBoard)
     console.table(gBoard)
     setMinesNegsCount(gBoard)
     renderBoard(gBoard)
+    updateMinecountdown()
+    handleRestartImoji('😃')
+
 
 }
 
@@ -46,8 +50,7 @@ function buildBoard() {
         }
     }
 
-    // board[0][1].isMine = board[2][3].isMine = true
-    // console.table(board)
+    board[0][1].isMine = board[2][3].isMine = true
     return board
 }
 
@@ -60,15 +63,17 @@ function renderBoard(board) {
         for (var j = 0; j < board[0].length; j++) {
             var cell = board[i][j]
             const className = `cell cell-${i}-${j} `
-            // var value = cell.isMine ? MINE : cell.minesAroundCount
-            strHTML += `<td onclick="onCellClicked(this, ${i}, ${j})" class="${className}">${getCelltHTML(cell)}</td>\n`
+            strHTML += `<td onclick="onCellClicked(this, ${i}, ${j})" 
+                        oncontextmenu="onCellMarked(this, ${i}, ${j})" 
+                        class="${className}">${getCelltHTML(cell)}</td>\n`
         }
-
         strHTML += '</tr>\n'
     }
+
     const elContainer = document.querySelector('.board')
     elContainer.innerHTML = strHTML
 
+    removeRightClickDefault()
 }
 
 function setMinesNegsCount() {
@@ -100,6 +105,10 @@ function getCelltHTML(cell) {
     return `<span class ="value hidden">${value}</span>`
 }
 
+function getFlagtHTML(cell, value) {
+    return `<span class ="value ">${value}</span>`
+}
+
 function getEmptyLocation(board) {
     var emptyLocations = []
     for (var i = 0; i < board.length; i++) {
@@ -123,5 +132,22 @@ function randomizeMines(board) {
 
 function checkGameOver() {
     gGame.isOn = false
+    handleRestartImoji('🤯')
+    stopTimer()
+}
+
+function checkVictory() {
+    if (gGame.revealedCount + gLevel.MINES === gLevel.SIZE ** 2) {
+        stopTimer()
+        console.log('win')
+        handleRestartImoji('😎')
+        gGame.isOn = false
+    }
+    return
+}
+
+function handleRestartImoji(value) {
+    var elButton = document.querySelector('.restart')
+    elButton.innerText = value
 }
 

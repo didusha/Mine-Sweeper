@@ -1,15 +1,49 @@
 'use strict'
 
+var gMillisec = 0;
+var gSeconds = 0;
+var gTimer = 0;
+
+function display() {
+    if (gMillisec >= 9) {
+        gMillisec = 0
+        gSeconds++
+    }
+    else
+        gMillisec++
+
+    var elTimer = document.querySelector('.timer')
+    elTimer.innerText = gSeconds                    
+    gTimer = setTimeout("display()", 100);
+}
+
+function startTimer() {
+    if (gTimer > 0) {
+        return
+    }
+    display()
+}
+
+function stopTimer() {
+    //stop timer
+    clearTimeout(gTimer)
+    //reset timer
+    gTimer = 0
+    gMillisec = 0
+    gSeconds = 0
+}
+
 //location such as: {i: 2, j: 7}
-// function renderCell(location, value) {
-//     // Select the elCell and set the value
-//     const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
-//     elCell.innerHTML = value
-// }
+function renderCell(location, value) {
+    // Select the elCell and set the value
+    const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
+    elCell.innerHTML = value
+}
 
 function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
+
 
 /*
 function buildBoard() {
@@ -46,9 +80,6 @@ function renderBoard(mat, selector) {
     elContainer.innerHTML = strHTML
 }
 
-
-
-
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min
 }
@@ -63,17 +94,17 @@ function getRandomColor() {
 }
 
 function getEmptyLocation(board) {
-	var emptyLocations = []
-	for (var i = 0; i < board.length; i++) {
-		for (var j = 0; j < board[0].length; j++) {
-			if (board[i][j] === EMPTY) {
-				emptyLocations.push({ i, j })
-			}
-		}
-	}
-	if (!emptyLocations.length) return null
-	var randIdx = getRandomIntInclusive(0, emptyLocations.length - 1)
-	return emptyLocations[randIdx]
+    var emptyLocations = []
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[0].length; j++) {
+            if (board[i][j] === EMPTY) {
+                emptyLocations.push({ i, j })
+            }
+        }
+    }
+    if (!emptyLocations.length) return null
+    var randIdx = getRandomIntInclusive(0, emptyLocations.length - 1)
+    return emptyLocations[randIdx]
 }
 
 function makeId(length = 6) {
@@ -104,27 +135,6 @@ function getTime() {
     return new Date().toString().split(' ')[4]
 }
 
-create a stopwatch
-{
-var gStartTime
-function startTimer() {
-    gStartTime = Date.now()
-    gTimerInterval = setInterval(updateTimer, 25)
-    // console.log(' gTimerInterval:', gTimerInterval)
-}
-
-function updateTimer() { 
-    const now = Date.now()
-    //* Taking the difference between current time and start time
-    //* and converting to seconds
-    const diff = (now - gStartTime) / 1000
-    document.querySelector('.timer span').innerText = diff.toFixed(3)
-}
-
-function stopTimer() {
-    clearInterval(gTimerInterval)
-}
-}
 
 flash buttons
 function flashOnceWrongAnswer(elBtn) {
@@ -174,4 +184,27 @@ function getNextLocation(eventKeyboard) {
     }
     return nextLocation;
 }
-    */
+
+var gStartTime
+var gTimerInterval
+
+//create a stopwatch
+function startTimer() {
+    gStartTime = Date.now()
+    gTimerInterval = setInterval(updateTimer, 25)
+    // console.log(' gTimerInterval:', gTimerInterval)
+}
+
+function updateTimer() { 
+    const now = Date.now()
+    //* Taking the difference between current time and start time
+    //* and converting to seconds
+    const diff = (now - gStartTime) / 1000
+    document.querySelector('.timer span').innerText = diff.toFixed(3)
+}
+
+function stopTimer() {
+    clearInterval(gTimerInterval)
+}
+
+ */
