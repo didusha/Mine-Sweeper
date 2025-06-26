@@ -7,21 +7,28 @@
     <title>Mine Sweeper</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
-<h1> Mine Sweeper </h1>
+<h1 class="game-name"> Mine Sweeper </h1>
 
 <body onload="onInit()">
-    <div>
-        <h1>
-            <span class="marked-counter">Count </span>
-            <button class="btn restart" onclick="onInit()"> </button>
-            <span class="timer">0</span>
-        </h1>
+
+    <div class="levels">
+        <button class="btn" onclick="onChangeDifficulty(4, 2)"> beginner</button>
+        <button class="btn" onclick="onChangeDifficulty(8, 14)"> Medium</button>
+        <button class="btn" onclick="onChangeDifficulty(12, 32)"> Expert</button>
     </div>
+
+    <h1 class="game-features">
+        <p> <span class="marked-counter"> 0 </span> </p>
+        <button class="btn restart" onclick="onInit()"> </button>
+        <p class="timer">0</p>
+    </h1>
+
     <!-- <div class="board-container"> -->
     <table>
         <tbody class="board"></tbody>
     </table>
     <!-- </div> -->
+    <h1 class="lives"></h1>
 
 
     <script src="js/utils.js"></script>

@@ -33,17 +33,32 @@ function stopTimer() {
     gSeconds = 0
 }
 
-//location such as: {i: 2, j: 7}
-function renderCell(location, value) {
-    // Select the elCell and set the value
-    const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
-    elCell.innerHTML = value
+function getEmptyLocation(board) {
+    var emptyLocations = []
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[0].length; j++) {
+            var cell = board[i][j]
+            if(cell.isRevealed) continue
+            if(cell.isMine) continue
+            emptyLocations.push({ i, j })
+        }
+    }
+    if (!emptyLocations.length) return null
+    var randIdx = getRandomIntInclusive(0, emptyLocations.length - 1)
+
+    return emptyLocations[randIdx]
 }
 
 function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+// //location such as: {i: 2, j: 7}
+// function renderCell(location, value) {
+//     // Select the elCell and set the value
+//     const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
+//     elCell.innerHTML = value
+// }
 
 /*
 function buildBoard() {
