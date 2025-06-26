@@ -11,10 +11,22 @@ function onCellClicked(elCell, i, j) {
     if (cell.isRevealed) return
     if (cell.isMineBlown) return
 
+    //reveal cell
     handleRevealed(cell, elCell)
 
     //If first click - Add all mines to board
     if (gGame.isFirstClick) setMinesOnBoard()
+
+    //if cell is a mine
+    if (cell.isMine) {
+        gGame.lives--
+        if (gGame.lives > 0) handleStrike(cell, elCell)
+        else {
+            gameOver(cell, elCell)
+            elCell.style.backgroundColor = 'rgb(252, 190, 199)'
+            return
+        }
+    }
 
     // if cell consist 0 --> expand reveal 
     if (cell.minesAroundCount === 0) {
@@ -22,22 +34,11 @@ function onCellClicked(elCell, i, j) {
         expandReveal(gBoard, elCell, i, j)
     }
 
-    //if cell is a mine
-    if (cell.isMine) {
-        gGame.lives--
-        if (gGame.lives > 0) handleStrike(cell, elCell)
-        else {
-            GameOver(cell, elCell)
-            elCell.style.backgroundColor = 'rgb(252, 190, 199)'
-            return
-        }
-    }
-
     checkVictory()
 }
 
 function expandReveal(board, elCell, rowIdx, colIdx) {
-    console.log('--expandReveal--')
+    // console.log('--expandReveal--')
     for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
         if (i < 0 || i >= board.length) continue
         for (var j = colIdx - 1; j <= colIdx + 1; j++) {
@@ -51,28 +52,23 @@ function expandReveal(board, elCell, rowIdx, colIdx) {
             //update DOM
             const elNGCell = document.querySelector(`.cell-${i}-${j} span`)
             elNGCell.classList.remove('hidden')
-
         }
     }
-    console.log('gGame.revealedCount', gGame.revealedCount)
-    // console.log(gBoard)
-    // renderBoard(gBoard)
 }
 
 function handleRevealed(cell, elCell) {
-    console.log('--handleRevealed--')
+    // console.log('--handleRevealed--')
+
     //Update Model
     cell.isRevealed = true
     gGame.revealedCount++
     //update DOM
     revealSpan(elCell)
-
-    // checkVictory()
 }
 
 function revealSpan(elCell) {
     // console.log('--revealSpan--')
-    var elSpan = elCell.querySelector('.value')
+    const elSpan = elCell.querySelector('.value')
     elSpan.classList.remove('hidden')
 }
 
@@ -93,7 +89,7 @@ function onCellMarked(elCell, i, j) {
 }
 
 function handleMarked(elCell, cell) {
-    console.log('--handleMarked--')
+    // console.log('--handleMarked--')
     if (cell.isRevealed) return
     if (gGame.isFirstClick) return
 
@@ -101,20 +97,19 @@ function handleMarked(elCell, cell) {
     cell.isMarked = true
     gGame.markedCount--
     if (cell.isMarked && cell.isMine) gGame.trueMarkedCount++
-    console.log('gGame.trueMarkedCount', gGame.trueMarkedCount)
-    // console.log('cell', cell)
 
     //update DOM
     elCell.innerHTML = `<span class ="value">${FLAG}</span>`
-    elCell.style.backgroundColor = 'azure'
+    elCell.style.backgroundColor = 'rgba(240, 255, 255, 0.644)'
 
     updateMinecountdown()
     checkVictory()
 }
 
 function handleUnMarked(elCell, cell) {
+    // console.log('--handleUnMarked--')
+
     if (cell.isMineBlown) return
-    console.log('--handleUnMarked--')
     //update model
     cell.isMarked = false
     gGame.markedCount++
@@ -122,13 +117,13 @@ function handleUnMarked(elCell, cell) {
     if (!cell.isMarked && cell.isMine) gGame.trueMarkedCount--
     console.log('gGame.trueMarkedCount', gGame.trueMarkedCount)
     updateMinecountdown()
-    // console.log('cell', cell)
+
     //update DOM
     elCell.innerHTML = getCelltHTML(cell)
 }
 
 function removeRightClickDefault() {
-    var elCells = document.querySelectorAll('.cell')
+    const elCells = document.querySelectorAll('.cell')
     for (var i = 0; i < elCells.length; i++) {
         elCells[i].addEventListener("contextmenu", (e) => { e.preventDefault(); });
     }

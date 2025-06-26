@@ -17,14 +17,14 @@ table {
   width: 30px;
   height: 30px;
   border: 1px solid black;
-  background-color: azure;
+  background-color: rgba(240, 255, 255, 0.644);
   cursor: pointer;
   border-radius: 3px;
+  font-size: 14px;
 }
 
 .cell:hover{
-  background-color: rgba(240, 255, 255, 0.753);
-  /* background-color: rgba(240, 255, 255, 0.548); */
+  background-color: rgba(240, 255, 255, 0.425);
 }
 
 .hidden {
