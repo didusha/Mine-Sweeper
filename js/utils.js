@@ -1,9 +1,5 @@
 'use strict'
 
-var gMillisec = 0;
-var gSeconds = 0;
-var gTimer = 0;
-
 function display() {
     if (gMillisec >= 9) {
         gMillisec = 0
@@ -13,12 +9,12 @@ function display() {
         gMillisec++
 
     const elTimer = document.querySelector('.timer')
-    elTimer.innerText = gSeconds                    
-    gTimer = setTimeout("display()", 100);
+    elTimer.innerText = gSeconds
+    gTimerInterval = setTimeout("display()", 100);
 }
 
 function startTimer() {
-    if (gTimer > 0) {
+    if (gTimerInterval > 0) {
         return
     }
     display()
@@ -26,9 +22,9 @@ function startTimer() {
 
 function stopTimer() {
     //stop timer
-    clearTimeout(gTimer)
+    clearTimeout(gTimerInterval)
     //reset timer
-    gTimer = 0
+    gTimerInterval = 0
     gMillisec = 0
     gSeconds = 0
 }
@@ -38,8 +34,8 @@ function getEmptyLocation(board) {
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
             var cell = board[i][j]
-            if(cell.isRevealed) continue
-            if(cell.isMine) continue
+            if (cell.isRevealed) continue
+            if (cell.isMine) continue
             emptyLocations.push({ i, j })
         }
     }
@@ -53,10 +49,68 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+function copyMat(mat) {
+    var newMat = []
+    
+    for (var i = 0; i < mat.length; i++) {
+        newMat[i] = []
+        for (var j = 0; j < mat[0].length; j++) {
+            newMat[i][j] = mat[i][j]
+        }
+    }
+    return newMat
+}
 
+function revealSpan(elCell) {
+    // console.log('--revealSpan--')
+    const elSpan = elCell.querySelector('.value')
+    elSpan.classList.remove('hidden')
+}
 
+function hideEl(selector) {
+    // console.log('--hideSpan--')
+    return document.querySelector(selector).classList.add('hidden')
+}
 
-/*
+function revealEl(selector) {
+    // console.log('--hideSpan--')
+    return document.querySelector(selector).classList.remove('hidden')
+}
+
+function getCell(location) {
+    // return elCell by location
+    return document.querySelector(`.cell-${location.i}-${location.j}`)
+}
+
+function getSpan(location) {
+    // return elSpan by location
+    return document.querySelector(`.cell-${location.i}-${location.j} span`)
+}
+
+function changeElBgColor(selector, color) {
+    const els = document.querySelectorAll(selector)
+    for (var i = 0; i < els.length; i++) {
+        els[i].style.backgroundColor = color
+    }
+}
+
+function changeElTextColor(selector, color) {
+    const els = document.querySelectorAll(selector)
+    for (var i = 0; i < els.length; i++) {
+        els[i].style.color = color
+    }
+}
+
+function changeElBoxShadowColor(selector, color) {
+    const els = document.querySelectorAll(selector)
+    for (var i = 0; i < els.length; i++) {
+        els[i].style.boxShadow = color
+    }
+}
+
+function changeElText(selector, text) {
+    document.querySelector(selector).innerText = text
+}
 
 //location such as: {i: 2, j: 7}
 function renderCell(location, value) {
@@ -64,7 +118,10 @@ function renderCell(location, value) {
     const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
     elCell.innerHTML = value
 }
-    
+
+/*
+
+
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min
 }
@@ -95,10 +152,6 @@ function showModal() {
 function hideModal() {
     const elModal = document.querySelector('.modal')
     elModal.classList.add('hidden')
-}
-
-function changeElText(selector, text) {
-    document.querySelector(selector).innerText = text
 }
 
 get current time in a normal view

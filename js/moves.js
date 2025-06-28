@@ -3,19 +3,43 @@
 // Left clicks functions
 function onCellClicked(elCell, i, j) {
     // console.log('--onCellClicked--')
+
+    //manual create mines
+    if (gGame.manualCreate.isManualCreate) {
+        setMinesOnBoardManually(i, j)
+        return
+    }
+
+    if (gGame.isFirstClick) gGame.isOn = true
+
     if (!gGame.isOn) return
     startTimer()
-
     const cell = gBoard[i][j]
+    
     if (cell.isMarked) return
     if (cell.isRevealed) return
     if (cell.isMineBlown) return
+    //on hint - click cell
+    if (gGame.isHint) {
+        revealHint(i, j)
+        return
+    }
+    //on mega hint - saves 2 cell positions
+    if (gGame.megaHint.amount === 0) return
+    if (gGame.megaHint.isMegaHint) {
+        handleMegaHint(i, j)
+        return
+    }
 
     //reveal cell
     handleRevealed(cell, elCell)
 
-    //If first click - Add all mines to board
-    if (gGame.isFirstClick) setMinesOnBoard()
+    if (gGame.isFirstClick) {
+        if (gGame.manualCreate.toRandomizeMines) {
+            setMinesOnBoard()
+        }
+        gGame.isFirstClick = false
+    }
 
     //if cell is a mine
     if (cell.isMine) {
@@ -35,6 +59,9 @@ function onCellClicked(elCell, i, j) {
     }
 
     checkVictory()
+
+    // gGame.prevBoards.push(copyMat(gBoard))
+    // console.log('gGame.prevBoards',gGame.prevBoards)
 }
 
 function expandReveal(board, elCell, rowIdx, colIdx) {
@@ -50,8 +77,7 @@ function expandReveal(board, elCell, rowIdx, colIdx) {
             currCell.isRevealed = true
             gGame.revealedCount++
             //update DOM
-            const elNGCell = document.querySelector(`.cell-${i}-${j} span`)
-            elNGCell.classList.remove('hidden')
+            revealEl(`.cell-${i}-${j} span`, 'hidden')
         }
     }
 }
@@ -66,12 +92,6 @@ function handleRevealed(cell, elCell) {
     revealSpan(elCell)
 }
 
-function revealSpan(elCell) {
-    // console.log('--revealSpan--')
-    const elSpan = elCell.querySelector('.value')
-    elSpan.classList.remove('hidden')
-}
-
 //Right click functions
 
 function onCellMarked(elCell, i, j) {
@@ -80,7 +100,6 @@ function onCellMarked(elCell, i, j) {
     startTimer()
 
     const cell = gBoard[i][j]
-
     if (!cell.isMarked) {
         handleMarked(elCell, cell)
     } else if (cell.isMarked) {
@@ -100,10 +119,13 @@ function handleMarked(elCell, cell) {
 
     //update DOM
     elCell.innerHTML = `<span class ="value">${FLAG}</span>`
-    elCell.style.backgroundColor = 'rgba(240, 255, 255, 0.644)'
+    elCell.style.backgroundColor = 'var(--clr-main-table)'
 
     updateMinecountdown()
     checkVictory()
+
+    // gGame.prevBoards.push(copyMat(gBoard))
+    // console.log('gGame.prevBoards',gGame.prevBoards)
 }
 
 function handleUnMarked(elCell, cell) {
@@ -120,6 +142,9 @@ function handleUnMarked(elCell, cell) {
 
     //update DOM
     elCell.innerHTML = getCelltHTML(cell)
+
+    // gGame.prevBoards.push(copyMat(gBoard))
+    // console.log('gGame.prevBoards',gGame.prevBoards)
 }
 
 function removeRightClickDefault() {

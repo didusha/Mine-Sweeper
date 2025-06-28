@@ -2,12 +2,9 @@
 
 //Mines functions
 function setMinesOnBoard() {
-    console.log('--setMinesOnBoard--')
+    // console.log('--setMinesOnBoard--')
     randomizeMines(gBoard)
-    // gBoard[0][1].isMine = gBoard[1][1].isMine = gBoard[1][2].isMine = true
-    // gBoard[1][3].isMine = gBoard[1][0].isMine = gBoard[0][3].isMine = true
-    // console.table(gBoard)
-    setMinesNegsCount(gBoard)
+    setMinesNegsCount()
     updateMinecountdown()
     renderBoard(gBoard)
     gGame.isFirstClick = false
@@ -62,44 +59,29 @@ function handleStrike(cell, elCell) {
     cell.isRevealed = false
     cell.isMineBlown = true
     //update DOM
-    elCell.style.backgroundColor = 'rgb(252, 190, 199)'
+    elCell.style.backgroundColor = 'var( --clr-mine-strike)'
     handleShowLives()
-
 }
 
+//On gameOver
 function revealAllMines(board) {
     console.log('--revealAllMines--')
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
             const cell = board[i][j]
             if (cell.isMarked && !cell.isMine) {
-                revealFaults(i, j)
+                revealFaultMarks(i, j)
             }
             if (cell.isMine) {
-                const elSpan = document.querySelector(`.cell-${i}-${j} span`)
-                elSpan.classList.remove('hidden')
-
+                revealEl(`.cell-${i}-${j} span`, 'hidden')
             }
         }
     }
 }
 
-function revealFaults(i, j) {
-    const elSpan = document.querySelector(`.cell-${i}-${j} span`)
+function revealFaultMarks(i, j) {
+    const elSpan = getSpan({i, j})              
     elSpan.classList.remove('hidden')
     elSpan.innerText = 'x'
-    elSpan.style.color = 'red'
+    elSpan.style.color = 'var(--clr-faults)'
 }
-
-//Not relevant for this version 
-// function addMarkOnVictory(board) {
-//     for (var i = 0; i < board.length; i++) {
-//         for (var j = 0; j < board[0].length; j++) {
-//             const cell = board[i][j]
-//             if (!cell.isRevealed && cell.isMine) {
-//                 var elCell = document.querySelector(`.cell-${i}-${j}`)
-//                 elCell.innerHTML = getFlagtHTML(cell, FLAG)
-//             }
-//         }
-//     }
-// }

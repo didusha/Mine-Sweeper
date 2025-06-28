@@ -15,6 +15,8 @@
         <button class="btn" onclick="onChangeDifficulty(4, 2)"> beginner</button>
         <button class="btn" onclick="onChangeDifficulty(8, 14)"> Medium</button>
         <button class="btn" onclick="onChangeDifficulty(12, 32)"> Expert</button>
+        <button class="btn manual-create" onclick="onManualCreate(this)">
+            Manually Create <span class="manual-mines"> </span> </button>
     </div>
 
     <h1 class="game-features">
@@ -24,17 +26,51 @@
     </h1>
 
     <!-- <div class="board-container"> -->
-    <table>
+    <table class="game-table">
         <tbody class="board"></tbody>
     </table>
     <!-- </div> -->
-    <h1 class="lives"></h1>
 
 
-    <script src="js/utils.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/moves.js"></script>
-    <script src="js/mines.js"></script>
+    <div class="left-container">
+
+
+        <div class="side-buttons">
+            <button class="btn side-btn" onclick="onDarkMode()"> Dark Mode </button>
+            <button class="btn side-btn mega-hint" onclick="onMegaHint(this)"> Mega Hint </button>
+            <button class="btn side-btn safe-click" onclick="onSafeClick(this)"> Safe Clicks <span> 3 </span></button>
+            <!-- <button class="btn side-btn" onclick="onUndo()"> Undo </button> -->
+        </div>
+
+        <div class="hints">
+            <button onclick="onHintReveal(this)" class="btn side-btn hint" data-id="0"> <span>💡</span></button>
+            <button onclick="onHintReveal(this)" class="btn side-btn hint" data-id="1"> <span>💡</span> </button>
+            <button onclick="onHintReveal(this)" class="btn side-btn hint" data-id="2"> <span>💡</span></button>
+        </div>
+        <h1 class="lives"></h1>
+    </div>
+
+    <div class="right-container">
+        <h2> Best Scores</h2>
+        <div>
+            <h3> Beginner</h3>
+            <div class="ld ld-0"></div>
+        </div>
+        <div>
+            <h3> Medium</h3>
+            <div class="ld ld-1"></div>
+        </div>
+        <div>
+            <h3> Expert</h3>
+            <div class="ld ld-2"></div>
+        </div>
+
+
+        <script src="js/utils.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/moves.js"></script>
+        <script src="js/mines.js"></script>
+        <script src="js/bonus.js"></script>
 </body>
 
 <footer class="footer">
