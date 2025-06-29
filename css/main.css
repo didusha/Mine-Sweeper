@@ -29,6 +29,7 @@ body {
   background-color: var(--clr-main-body);
   color: var(--clr-main-txt);
   text-align: center;
+   font-family: monospace;
 }
 
 .ld-table {

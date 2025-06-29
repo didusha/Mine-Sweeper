@@ -110,7 +110,7 @@ function onSafeClick(elBtn) {
 }
 
 //Dark Mode
-function onDarkMode() {
+function onDarkMode(elBtn) {
     gIsDarkMode = !gIsDarkMode
     console.log('gIsDarkMode', gIsDarkMode)
 
@@ -120,12 +120,15 @@ function onDarkMode() {
 
         changeElTextColor('.btn', 'var(--clr-dm-txt)')
         changeElBoxShadowColor('.btn', '0 0 5px var(--clr-main-box-shadow), 0 0 0 4px var(--clr-dm-txt), 0 0 0 5px var(-clr-dm-btn-bg)')
+        elBtn.innerText = 'Light Mode'
+
     } else {
         changeElBgColor('body', 'revert-layer')
         changeElBgColor('.btn', 'revert-layer')
 
         changeElTextColor('.btn', 'revert-layer')
         changeElBoxShadowColor('.btn', 'revert-layer')
+        elBtn.innerText = 'Dark Mode'
     }
 
 }
